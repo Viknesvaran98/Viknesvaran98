@@ -1,0 +1,126 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <limits>
+#include <cmath>
+#define TS 100
+
+using namespace std;
+
+int* input(int(&ids)[TS], string(&nNames)[TS], string(&nPositions)[TS]);
+int* output(int(&ids)[TS], string(&nNames)[TS], string(&nPositions)[TS]);
+
+int getPos(int(&ids)[TS], int id) {
+
+    // check for existing
+    for (int a = 0; a < 100; a++) {
+        if (ids[a] == id) {
+            return a;
+        }
+    }
+
+    // assign new key
+    for (int b = 0; b < 100; b++) {
+        if (ids[b] == 0) {
+            ids[b] = id;
+            return b;
+        }
+    }
+    return -1;
+}
+
+int main()
+{
+    int ids[TS] = { 0 };
+    string nNames[TS];
+    string nPositions[TS];
+
+
+    int* arrKeys;
+
+    int choice;
+
+    do
+    {
+        cout << "---------------------------------\n";
+        cout << "\tSECTION : MENU\n";
+        cout << "---------------------------------\n";
+        cout << "1. Data Input \n2. Data Location\n3. Exit";
+        cout << "\nEnter choice : ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:   cout << "---------------------------------\n";
+            cout << "\tSECTION : DATA INPUT\n";
+            cout << "---------------------------------\n";
+            arrKeys = input(ids, nNames, nPositions);
+            break;
+        case 2:   cout << "---------------------------------\n";
+            cout << "\tSECTION : DATA LOCATION\n";
+            cout << "---------------------------------\n";
+            arrKeys = output(ids, nNames, nPositions);
+            break;
+        case 3:   cout << "End of Program\n";
+        }
+    } while (choice != 3);
+
+    return 0;
+}
+
+int* input(int(&ids)[TS], string(&nNames)[TS], string(&nPositions)[TS])
+{
+
+    string nName, nPosition;
+
+    int x;
+    cout << "Staff ID No\t: ";
+    cin >> x;
+    fflush(stdin);
+
+    if (x <= 90020999 && x >= 90020001)
+    {
+        cout << "Staff Name\t: ";
+        getline(cin, nName);
+        getline(cin, nName);
+        cout << "Staff Position\t: ";
+        getline(cin, nPosition);
+
+        int pos = getPos(ids, x);
+
+        nNames[pos] = nName;
+        nPositions[pos] = nPosition;
+    }
+    else
+    {
+        cout << "Invalid ID!!";
+    }
+    return 0;
+}
+
+
+int* output(int(&ids)[TS], string(&nNames)[TS], string(&nPositions)[TS])
+{
+    int count = 0;
+    string nName, nPosition;
+    int x;
+    int powerOf = pow(count, 2);
+    cout << "Enter ID No\t: ";
+    cin >> x;
+
+    int pos = getPos(ids, x) % 100;
+
+    nName = nNames[pos];
+    nPosition = nPositions[pos];
+
+    cout << "Result: \n";
+    cout << "Staff ID No\t: " << x;
+    cout << "\nStaff Name\t: " << nName;
+    cout << "\nStaff Position\t: " << nPosition;
+
+    // do the quadratic probing here
+    int qb = (x + powerOf) % TS;
+    cout << "\nStorage Location: Index " << qb << "\n";
+    count++;
+    return 0;
+}
