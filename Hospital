@@ -1,0 +1,327 @@
+Main.cpp
+
+#include <iostream>
+#include "Hospital.h"
+
+int main() {
+	Hospital hospital;
+	int choice;
+	//create class object and variables
+
+	do {
+
+		choice = hospital.menu();
+		switch (choice) {
+		case 1: hospital.registerPatient();
+			break;
+		case 2: hospital.displayPatient();
+		      cout << endl;
+			break;
+		case 3: hospital.updatePatient();
+		      cout << endl;
+			break;
+		case 4: hospital.deletePatient();
+		  cout << endl;
+			break;
+		}
+	} while (choice != 5);
+}
+Hospital.h
+
+#include <iostream>
+#include <string>
+#include <cstdlib>
+
+using namespace std;
+
+class Hospital {
+	//node declaration
+	struct Patient {
+		string Patient_Name, contactNo, Patient_IC, Type_Disease, Doc_Name, Patient_Status, Patient_Priority;
+		Patient* next;
+		Patient* prev;
+
+		//Question 3(2)
+	};
+
+public:
+	//initialize both head and tail pointers to NULL
+	Hospital() {
+		start = NULL;
+		end = NULL;
+	}
+
+	int menu() {
+		int choice;
+		//display menu options
+		cout << "\n(1)REGISTER PATIENT" << endl;
+		cout << "(2)DISPLAY PATIENT" << endl;
+		cout << "(3)UPDATE PATIENT" << endl;
+		cout << "(4)DELETE PATIENT" << endl;
+		cout << "(5)EXIT" << endl;
+		cin >> choice;
+		//return user choice
+		return choice;
+	}
+
+	Patient* dataPatient() {
+		//Question 2(2)
+		int tempPatient_Priority;
+		int tempDoc_Name;
+		//create a new node
+		Patient* n = new Patient();
+
+		//accept user’s data inputs
+		getline(cin, n->Patient_Name);
+		cout << "\nPlease Enter Patient's Name: ";
+		getline(cin, n->Patient_Name);
+		cout << "Please Enter Patient's IC/Passport number: ";
+		getline(cin, n->Patient_IC);
+		cout << "Please Enter Patient's Contact Number: ";
+		getline(cin, n->contactNo);
+		cout << "Type of Disease: ";
+		getline(cin, n->Type_Disease);
+		cout << "Please choose a Doctor you would like to be assigned to: " << endl;
+		cout << "(1) Dr Nazrul Azmi" << endl;
+		cout << "(2) Dr Nazree Hisyam" << endl;
+		cout << "(3) Dr Nazrun Nizam" << endl;
+		cin >> tempDoc_Name;
+		cout << "Please Choose Level of Priority: " << endl;
+		cout << "1. Emergency" << endl;
+		cout << "2. Normal" << endl;
+		cin >> tempPatient_Priority; 
+		
+
+		switch (tempDoc_Name)
+		{
+		case 1: n->Doc_Name = "Dr. Nazrul Azmi"; break;
+		case 2: n->Doc_Name = "Dr. Nazree Hisyam"; break;
+		case 3: n->Doc_Name = "Dr. Nazrun Nizam"; break;
+		}
+
+		switch (tempPatient_Priority)
+		{
+			case 1: n->Patient_Priority = "Emergency"; break;
+			case 2: n->Patient_Priority = "Normal"; break;
+		}
+
+		//return address of new node to registerPatient()
+		n->next = NULL;
+		return n;
+
+	}
+
+	
+	void registerPatient() {
+		Patient* n = dataPatient();
+		n->next = NULL;
+		n->prev = NULL;
+		Patient* p = start;
+		if (start == NULL || n->Patient_Priority < start->Patient_Priority) {
+			n->next = start;
+			start = n;
+			end = n;
+		}
+		else {
+			while (p->next != NULL && p->next->Patient_Priority <= n->Patient_Priority)
+			p = p->next;
+			n->next = p->next;
+			p->next = n;
+		}
+	}
+
+
+	void displayPatient()
+	{
+		Patient* p;
+		int choice;
+		string searchPatient;
+		string searchDoctor;
+		string searchPriority;
+		if (start == NULL) {
+			cout << "No Record" << endl;
+		}
+		else
+		{
+			cout << "1. Display Individual Patient" << endl;
+			cout << "2. Display All Patient" << endl;
+			cout << "3. Display List of Patient Under a Specific Doctor" << endl;
+			cout << "4. Display Emergency or Normal Cases" << endl;
+			cin >> choice;
+			do
+			{
+				if (choice == 1)
+				{
+					cout << "Patient ID: ";
+					cin >> searchPatient;
+					for (p = start; p != NULL; p = p->next)
+					{
+						if (p->Patient_IC == searchPatient)
+						{
+							cout << "\nPatient's Name: " << p->Patient_Name << endl;
+							cout << "Patient's IC/Passport Number: " << p->Patient_IC << endl;
+							cout << "Patient's Contact Number: " << p->contactNo << endl;
+							cout << "Patient's Type of Disease: " << p->Type_Disease << endl;
+							cout << "Doctor's Name: " << p->Doc_Name << endl;
+							cout << "Patient's Status: " << p->Patient_Status << endl; 
+							cout << "Patient Priority: " << p->Patient_Priority << endl;
+						}
+					}
+				}
+				else if (choice == 2)
+				{
+					for (p = start; p != NULL; p = p->next)
+					{
+						cout << "\nPatient's Name: " << p->Patient_Name << endl;
+						cout << "Patient's IC/Passport Number: " << p->Patient_IC << endl;
+						cout << "Patient's Contact Number: " << p->contactNo << endl;
+						cout << "Patient's Type of Disease: " << p->Type_Disease << endl;
+						cout << "Doctor's Name: " << p->Doc_Name << endl;
+						cout << "Patient's Status: " << p->Patient_Status << endl;
+						cout << "Patient Priority: " << p->Patient_Priority << endl;
+					}
+				}
+				else if (choice == 3)
+				{
+					cout << "List of Doctors:" << endl;
+					cout << "Dr. Nazrul Azmi" << endl;
+					cout << "Dr. Nazree Hisyam" << endl;
+					cout << "Dr. Nazrun Nizam" << endl;
+					cout << "Please enter the Doctor Name: ";
+					getline(cin, searchDoctor);
+					getline(cin, searchDoctor);
+					for (p = start; p != NULL; p = p->next)
+					{
+						if (p->Doc_Name == searchDoctor)
+						{
+							cout << "\nPatient's Doctor's Name: " << p->Doc_Name << endl;
+							cout << "Patient's Name: " << p->Patient_Name << endl;
+							cout << "Patient's IC/Passport Number: " << p->Patient_IC << endl;
+							cout << "Patient's Contact Number: " << p->contactNo << endl;
+							cout << "Patient's Type of Disease: " << p->Type_Disease << endl;
+							cout << "Patient's Status: " << p->Patient_Status << endl;
+							cout << "Patient Priority: " << p->Patient_Priority << endl;
+						}
+					}
+				}
+				else if (choice == 4)
+				{
+					cout << "\nList of Priority(Please Enter Emergency or Normal)" << endl;
+					cout << "Please enter the priority you wish to see: ";
+					getline(cin, searchPriority);
+					getline(cin, searchPriority);
+					for (p = start; p != NULL; p = p->next)
+					{
+						if (p->Patient_Priority == searchPriority)
+						{
+							cout << "\nPatient Priority: " << p->Patient_Priority << endl;
+							cout << "Patient's Doctor's Name: " << p->Doc_Name << endl;
+							cout << "Patient's Name: " << p->Patient_Name << endl;
+							cout << "Patient's IC/Passport Number: " << p->Patient_IC << endl;
+							cout << "Patient's Contact Number: " << p->contactNo << endl;
+							cout << "Patient's Type of Disease: " << p->Type_Disease << endl;
+							cout << "Patient's Status: " << p->Patient_Status << endl;
+						}
+					}
+				}
+				else {
+					cout << "Invalid Input" << endl;
+				}
+
+			} while (choice < 1 || choice > 4);
+		}
+	}
+	
+
+	void deletePatient() {
+		//Question 3(4)
+		Patient* n, * m;
+		string searchIC;
+		cout << "Patient IC/Passport Number that you want to delete: ";
+		cin >> searchIC;
+		if (start == NULL)
+		{
+			cout << "No record";
+		}
+		else
+		{
+			if (start->Patient_IC == searchIC)
+			{
+				n = start;
+				start = start->next;
+				if (start != NULL)
+				start->prev = NULL;
+				free(n);
+			}
+			else
+			{
+				n = start;
+				while (n->next->Patient_IC != searchIC)
+				{
+					n = n->next;
+				}
+				m = n->next;
+				m = n->prev;
+				m->prev = m;
+				m->next = m;
+				
+				if (end == m)
+					end = n->prev;
+				end->next = NULL;
+				free(m);
+
+			}
+		}
+	}
+
+	void updatePatient()
+	{
+		Patient* p;
+		string searchPatient;
+		int status, priority;
+		cout << "Patient's IC/Passport Number: ";
+		cin >> searchPatient;
+		for (p = start; p != NULL; p = p->next)
+		{
+			if (p->Patient_IC == searchPatient)
+			{
+				cout << "\nPatient's Name: " << p->Patient_Name << endl;
+				cout << "Patient's IC/Passport Number: " << p->Patient_IC << endl;
+				cout << "Patient's Contact Number: " << p->contactNo << endl;
+				cout << "Patient's Type of Disease: " << p->Type_Disease << endl;
+				cout << "Patient's Doctor's name: " << p->Doc_Name << endl;
+				cout << "Patient's Current Status" << endl;
+				cout << "1 - Inpatient\n2 - Outpatient" << endl;
+				cout << "Status patient number: ";
+				cin >> status;
+				cout << "Current Priority" << endl;
+				cout << "1 - Emergency\n2 - Normal" << endl;
+				cout << "Status of Patient Priority: ";
+				cin >> priority;
+				if (status == 1 && priority == 1)
+				{
+					p->Patient_Status = "Inpatient";
+					p->Patient_Priority = "Emergency";
+				}
+				else if (status == 2 && priority == 1)
+				{
+					p->Patient_Status = "Outpatient";
+					p->Patient_Priority = "Emergency";
+				}
+				else if (status == 1 && priority == 2)
+				{
+					p->Patient_Status = "Inpatient";
+					p->Patient_Priority = "Normal";
+				}
+				else if (status == 2 && priority == 2)
+				{
+					p->Patient_Status = "Outpatient";
+					p->Patient_Priority = "Normal";
+				}
+			}
+		}
+	}
+
+private:
+	Patient* start, * end;
+};
