@@ -16,6 +16,9 @@ Here are some ideas to get you started:
 -->
 ## <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=29F73D&background=37FFBB00&width=435&lines=Hello+World+!!" alt="Typing SVG" /></a>
 
+##🔥 Latest Updates (May 2026)
+
+🏗️ Building: A custom resume-building tool.
 
 By day, I break software. By doing so, I help build better software.
 
