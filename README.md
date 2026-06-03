@@ -18,7 +18,7 @@ Here are some ideas to get you started:
 
 By day, I break software. By doing so, I help build better software.
 
-I’m a Senior Software QA Analyst passionate about uncovering defects before customers do. With experience in banking and digital payment systems, I specialize in validating complex transaction flows, APIs, databases, and business-critical applications that process millions in daily transactions.
+A Senior Software QA Analyst passionate about uncovering defects before customers do. With experience in banking and digital payment systems, I specialize in validating complex transaction flows, APIs, databases, and business-critical applications that process millions in daily transactions.
 
 🔍 What I do:
 
